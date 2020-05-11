@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BodifyApplicationTests {
 
+    //Application Context Test
     @Test
     void contextLoads() {
     }

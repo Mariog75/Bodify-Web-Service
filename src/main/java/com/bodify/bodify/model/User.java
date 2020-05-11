@@ -1,25 +1,51 @@
 package com.bodify.bodify.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
 
 @Getter
 @Setter
+@Data
+@Document(collection = "users")
 public class User {
 
-    @Id
-    private String id;
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
 
+    @Id
+    @NotNull(message = "Id is mandatory")
+    private Long id;
+
+    @NotNull(message = "Email is mandatory")
+    @Email(message = "Invalid email")
+    @Indexed(unique = true)
     private String email;
+
+    @NotNull(message = "Password is mandatory")
     private String password;
 
+    @NotNull(message = "Name is mandatory")
     private String name;
-    private Date dateOfBirth;
+
+    @NotNull(message = "Date is mandatory")
+    private Date dateOfBirth = new Date();
+
+    @NotNull(message = "Weight is mandatory")
     private double weight;
+
+    @NotNull(message = "Height is mandatory")
     private int height;
-    private HashMap<Date, Double> weightHistory;
+    private HashMap<String, Double> weightHistory;
+
+
 }
