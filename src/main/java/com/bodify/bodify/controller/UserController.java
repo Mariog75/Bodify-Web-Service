@@ -1,6 +1,7 @@
 package com.bodify.bodify.controller;
 
 import com.bodify.bodify.model.User;
+import com.bodify.bodify.service.SequenceGenerator;
 import com.bodify.bodify.service.UserManagementImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,16 +17,23 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserManagementImpl registrationImpl;
+    @Autowired
+    private SequenceGenerator sequenceGenerator;
 
 
+    //Test Endpoint
     @GetMapping(path = "/welcome")
     public String welcome() throws Exception {
         return "Test Endpoint";
     }
 
+    //Add a new User document to Collection of Users
     @PostMapping(path = "/registerUser")
     public ResponseEntity registerUser(@RequestBody User user) throws Exception {
         HashMap<String, Object> resp = new HashMap<>();
+        user.setId(sequenceGenerator.generateSequence(User.SEQUENCE_NAME));
+
+        //Try adding user document to collection and catch validation exceptions
         try {
             registrationImpl.registerUser(user);
         } catch (ConstraintViolationException e) {
@@ -44,18 +52,21 @@ public class UserController {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
+    //Get User by their ID
     @GetMapping(path = "/getUser")
     public ResponseEntity getUserById(@RequestParam("id") String id) throws Exception {
         User user = registrationImpl.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    //Get all Users from Collection
     @GetMapping(path = "/getAllUsers")
     public ResponseEntity getAllUsers() throws Exception {
         List<User> allUsers = registrationImpl.getAllUsers();
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
+    //Update a specific User document
     @PutMapping(path = "/updateUser")
     public ResponseEntity updateUser(@RequestParam("id") String id, @RequestBody User user) throws Exception {
         HashMap<String, Object> resp = new HashMap<>();
@@ -64,6 +75,7 @@ public class UserController {
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
+    //Delete a User document
     @DeleteMapping(path = "/deleteUser")
     public ResponseEntity deleteUser(@RequestParam("id") String id) throws Exception {
         registrationImpl.deleteUser(id);

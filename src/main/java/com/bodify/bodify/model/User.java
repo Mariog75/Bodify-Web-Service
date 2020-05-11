@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -18,9 +19,12 @@ import java.util.HashMap;
 @Document(collection = "users")
 public class User {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
+
     @Id
     @NotNull(message = "Id is mandatory")
-    private String id;
+    private long id;
 
     @NotNull(message = "Email is mandatory")
     @Email(message = "Invalid email")
@@ -39,7 +43,7 @@ public class User {
     @NotNull(message = "Weight is mandatory")
     private double weight;
 
-    @NotNull(message = "height is mandatory")
+    @NotNull(message = "Height is mandatory")
     private int height;
     private HashMap<String, Double> weightHistory;
 
