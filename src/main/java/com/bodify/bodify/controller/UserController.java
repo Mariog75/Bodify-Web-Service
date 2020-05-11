@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("user")
 public class UserController {
     @Autowired
-    private UserManagementImpl registrationImpl;
+    private UserManagementImpl UserManagementImpl;
     @Autowired
     private SequenceGenerator sequenceGenerator;
 
@@ -35,7 +35,7 @@ public class UserController {
 
         //Try adding user document to collection and catch validation exceptions
         try {
-            registrationImpl.registerUser(user);
+            UserManagementImpl.registerUser(user);
         } catch (ConstraintViolationException e) {
             HashMap<String, String> messages = new HashMap<>();
             e.getConstraintViolations().stream().forEach(constraintViolation -> {
@@ -54,31 +54,31 @@ public class UserController {
 
     //Get User by their ID
     @GetMapping(path = "/getUser")
-    public ResponseEntity getUserById(@RequestParam("id") String id) throws Exception {
-        User user = registrationImpl.getUserById(id);
+    public ResponseEntity getUserById(@RequestParam("id") Long id) throws Exception {
+        User user = UserManagementImpl.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     //Get all Users from Collection
     @GetMapping(path = "/getAllUsers")
     public ResponseEntity getAllUsers() throws Exception {
-        List<User> allUsers = registrationImpl.getAllUsers();
+        List<User> allUsers = UserManagementImpl.getAllUsers();
         return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
     //Update a specific User document
     @PutMapping(path = "/updateUser")
-    public ResponseEntity updateUser(@RequestParam("id") String id, @RequestBody User user) throws Exception {
+    public ResponseEntity updateUser(@RequestParam("id") Long id, @RequestBody User user) throws Exception {
         HashMap<String, Object> resp = new HashMap<>();
-        registrationImpl.updateUser(user);
+        UserManagementImpl.updateUser(user);
         resp.put("user", user);
         return new ResponseEntity<>(resp, HttpStatus.OK);
     }
 
     //Delete a User document
     @DeleteMapping(path = "/deleteUser")
-    public ResponseEntity deleteUser(@RequestParam("id") String id) throws Exception {
-        registrationImpl.deleteUser(id);
+    public ResponseEntity deleteUser(@RequestParam("id") Long id) throws Exception {
+        UserManagementImpl.deleteUser(id);
         HashMap<String, String> resp = new HashMap<>();
         resp.put("message", "User successfully deleted");
         return new ResponseEntity<>(resp, HttpStatus.OK);

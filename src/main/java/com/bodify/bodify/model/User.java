@@ -24,7 +24,7 @@ public class User {
 
     @Id
     @NotNull(message = "Id is mandatory")
-    private long id;
+    private Long id;
 
     @NotNull(message = "Email is mandatory")
     @Email(message = "Invalid email")
