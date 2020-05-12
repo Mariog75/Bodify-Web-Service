@@ -19,20 +19,9 @@ import java.util.HashMap;
 @Document(collection = "users")
 public class User {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "users_sequence";
-
     @Id
     @NotNull(message = "Id is mandatory")
-    private Long id;
-
-    @NotNull(message = "Email is mandatory")
-    @Email(message = "Invalid email")
-    @Indexed(unique = true)
-    private String email;
-
-    @NotNull(message = "Password is mandatory")
-    private String password;
+    private String id;
 
     @NotNull(message = "Name is mandatory")
     private String name;

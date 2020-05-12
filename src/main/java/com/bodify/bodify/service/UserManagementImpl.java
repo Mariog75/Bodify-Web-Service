@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserManagementImpl implements UserManagement<Long, User> {
+public class UserManagementImpl implements UserManagement<String, User> {
 
     @Autowired
     private UserRepository userRepository;
@@ -21,7 +21,7 @@ public class UserManagementImpl implements UserManagement<Long, User> {
     }
 
     @Override
-    public User getUserById(Long userId) throws Exception {
+    public User getUserById(String userId) throws Exception {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isPresent()){
             return optionalUser.get();
@@ -42,7 +42,7 @@ public class UserManagementImpl implements UserManagement<Long, User> {
     }
 
     @Override
-    public void deleteUser(Long userId) throws Exception {
+    public void deleteUser(String userId) throws Exception {
         if(userId == null) {
             throw new Exception("User is null");
         } else {
